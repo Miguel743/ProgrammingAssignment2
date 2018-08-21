@@ -1,34 +1,35 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
-
 makeCacheMatrix <- function(x = matrix()) {
+  ## initializing objects x and inv
   inv <- NULL
+  ## defining the "behaviors"of functions for objects of type makeCacheMatrix, namely set, get,
+  ## setInverse, and getInverse
   set <- function(y) {
     x <<- y
     inv <<- NULL
   }
   get <- function() x
-  set_inverse <- function(inverse) inv <<- inverse
-  get_inverse <- function() inv
-  list(set=set, get=get, set_inverse=set_inverse, get_inverse=get_inverse)
+  setInverse <- function(Inverse) inv <<- Inverse
+  getInverse <- function() inv
+  ## create a new object by returning a list()
+  list(set = set, get =  get, setInverse = setInverse, getInverse = getInverse)
 }
 
 
-# The following function returns the inverse of the matrix. It first checks if the inverse has already been computed. 
-# If so, it gets the result and skips the computation. If not, it computes the inverse, sets the value in the cache via
-# set_inverse function.
+## Write a short comment describing this function
 
-# This function assumes that the matrix is always invertible.
 cacheSolve <- function(x, ...) {
-  inv <- x$get_inverse()
-  if(!is.null(inv)) {
-    message("getting cached data.")
+  ## Return a matrix that is the inverse of 'x'
+  ## call the getInverse() function on the input object
+  inv <- x$getInverse()
+  ## check whether the result is NULL
+  if (!is.null(inv)) {
+    message("getting cached data")
     return(inv)
   }
-  data <- x$get()
-  inv <- solve(data)
-  x$set_inverse(inv)
+  ## if !is.null(inv) is FALSE, get the vector from the input object, calculate the inverse, 
+  ## and set the inverse in the input object. afterwards, return inv
+  mat.data <- x$get()
+  inv <- solve(mat.data, ...)
+  x$setInverse(inv)
   inv
 }
